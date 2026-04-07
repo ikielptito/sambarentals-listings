@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samba Rentals</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Samba Rentals">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Sora:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#faf8f4;--surface:#fff;--border:#e8e2d8;--text:#1a1814;--muted:#8a8478;--accent:#c8402a;--green:#2a6a3a;--dark:#1a1814;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;}
+
+/* NAV */
+nav{background:var(--dark);padding:0 28px;height:52px;display:flex;align-items:center;justify-content:center;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:1.1rem;color:#fff;letter-spacing:0.02em;}
+
+/* STATE SCREENS */
+.state{min-height:80vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:var(--muted);font-size:0.9rem;}
+.spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* LISTING */
+#listing{display:none;}
+
+/* CAROUSEL */
+.carousel-wrap{width:100%;background:#111;position:relative;overflow:hidden;}
+.carousel-track{display:flex;transition:transform 0.4s ease;will-change:transform;}
+.carousel-slide{min-width:100%;height:70vw;max-height:560px;flex-shrink:0;overflow:hidden;}
+.carousel-slide img{width:100%;height:100%;object-fit:cover;display:block;}
+.car-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.45);border:none;color:#fff;
+  width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;
+  transition:background 0.2s;z-index:2;}
+.car-btn:hover{background:rgba(0,0,0,0.75);}
+.car-prev{left:14px;}.car-next{right:14px;}
+.car-dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2;}
+.car-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.5);cursor:pointer;transition:background 0.2s;}
+.car-dot.active{background:#fff;}
+.car-count{position:absolute;top:14px;right:14px;background:rgba(0,0,0,0.5);color:#fff;font-size:0.7rem;
+  padding:4px 10px;border-radius:20px;z-index:2;}
+.carousel-loading{min-height:320px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.82rem;gap:10px;}
+
+/* CONTENT */
+.content{max-width:760px;margin:0 auto;padding:36px 24px 80px;}
+
+.prop-tag{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:8px;}
+.prop-title{font-family:'Playfair Display',serif;font-size:2rem;letter-spacing:-0.02em;line-height:1.15;margin-bottom:20px;}
+
+.overview{font-size:0.92rem;line-height:1.85;color:var(--text);margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid var(--border);}
+
+/* DETAILS GRID */
+.details-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:28px;margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid var(--border);}
+.detail-section-title{font-size:0.63rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:10px;}
+.detail-row{font-size:0.82rem;line-height:1.9;color:var(--text);}
+.detail-row::before{content:'· ';color:var(--muted);}
+.incl-row{font-size:0.82rem;line-height:1.9;color:var(--text);}
+.incl-row::before{content:'✓ ';color:var(--green);}
+
+/* PRICING */
+.pricing-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-bottom:32px;}
+.pricing-title{font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:16px;}
+.price-rows{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.price-item{}
+.price-amt{font-family:'Playfair Display',serif;font-size:1.6rem;display:block;line-height:1.1;}
+.price-per{font-size:0.72rem;color:var(--muted);}
+
+/* MAP */
+.map-section{margin-bottom:32px;}
+.map-section-title{font-size:0.63rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:12px;}
+.map-wrap{border-radius:12px;overflow:hidden;border:1px solid var(--border);position:relative;}
+.map-wrap iframe{width:100%;height:240px;border:none;display:block;}
+.map-open-btn{position:absolute;bottom:10px;right:10px;background:rgba(255,255,255,0.92);border:1px solid var(--border);
+  border-radius:8px;padding:6px 12px;font-family:'Sora',sans-serif;font-size:0.72rem;color:var(--text);
+  text-decoration:none;backdrop-filter:blur(4px);transition:all 0.2s;}
+.map-open-btn:hover{background:#fff;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:0.72rem;color:var(--muted);}
+
+/* LIGHTBOX */
+.lb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:1000;
+  align-items:center;justify-content:center;flex-direction:column;gap:16px;}
+.lb-overlay.open{display:flex;}
+.lb-img{max-width:94vw;max-height:82vh;object-fit:contain;border-radius:4px;}
+.lb-controls{display:flex;align-items:center;gap:20px;}
+.lb-btn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:#fff;
+  width:44px;height:44px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.lb-btn:hover{background:rgba(255,255,255,0.22);}
+.lb-counter{color:rgba(255,255,255,0.5);font-size:0.8rem;min-width:60px;text-align:center;}
+.lb-close{position:fixed;top:16px;right:16px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);
+  color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+
+@media(max-width:600px){
+  .content{padding:24px 16px 60px;}
+  .prop-title{font-size:1.6rem;}
+  .price-rows{gap:16px;}
+}
+</style>
+</head>
+<body>
+
+<nav><span class="nav-brand">Samba Rentals</span></nav>
+
+<div class="state" id="loading"><div class="spinner"></div><span>Loading listing…</span></div>
+<div class="state" id="error" style="display:none"><div style="font-size:2rem">⚠️</div><span id="error-msg">Listing not found.</span></div>
+
+<div id="listing">
+  <div id="carousel-wrap" class="carousel-wrap">
+    <div class="carousel-loading" id="carousel-loading"><div class="spinner"></div><span>Loading photos…</span></div>
+    <div class="carousel-track" id="carousel-track" style="display:none"></div>
+    <button class="car-btn car-prev" id="car-prev" onclick="carNav(-1)" style="display:none">←</button>
+    <button class="car-btn car-next" id="car-next" onclick="carNav(1)" style="display:none">→</button>
+    <div class="car-dots" id="car-dots"></div>
+    <div class="car-count" id="car-count" style="display:none"></div>
+  </div>
+
+  <div class="content">
+    <div class="prop-tag" id="prop-tag"></div>
+    <h1 class="prop-title" id="prop-title"></h1>
+    <p class="overview" id="prop-overview"></p>
+
+    <div class="details-grid" id="details-grid"></div>
+
+    <div class="pricing-card">
+      <div class="pricing-title">Pricing</div>
+      <div class="price-rows" id="price-rows"></div>
+      <div class="detail-section-title">Monthly Inclusions</div>
+      <div id="inclusions"></div>
+    </div>
+
+    <div class="map-section">
+      <div class="map-section-title">Location</div>
+      <div class="map-wrap">
+        <iframe id="map-iframe" src="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        <a class="map-open-btn" id="map-btn" href="#" target="_blank">📍 Open in Maps</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>© Samba Rentals · Bali, Indonesia</footer>
+
+<!-- LIGHTBOX -->
+<div class="lb-overlay" id="lb" onclick="if(event.target===this)closeLb()">
+  <button class="lb-close" onclick="closeLb()">✕</button>
+  <img class="lb-img" id="lb-img" src="" alt="" />
+  <div class="lb-controls">
+    <button class="lb-btn" onclick="lbNav(-1)">←</button>
+    <span class="lb-counter" id="lb-counter"></span>
+    <button class="lb-btn" onclick="lbNav(1)">→</button>
+  </div>
+</div>
+
+<script>
+// ── PROPERTY DATA ──
+const HAUS={
+  tag:'Batu Bolong · Canggu',
+  mapEmbed:'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3946.4!2d115.1429!3d-8.6419!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwMzgnMzEuMCJTIDExNcKwMDgnMzQuNiJF!5e0!3m2!1sen!2sid!4v1',
+  mapLink:'https://maps.app.goo.gl/tMuPXqKHxhbKLDVe6',
+  overview:'Boutique collection of 8 fully furnished one-bedroom apartments in the heart of Batu Bolong. Steps from cafés, restaurants, and nightlife, yet tucked in a quiet residential lane.',
+  features:['43–46m² building · 4 are land','1 Bedroom · 1 Bathroom','Large shared swimming pool','Outdoor lounge seating','Terrazzo bathrooms · Teak & rattan cabinetry','Fully equipped kitchen · Air-conditioning','High-speed fiber internet · Fully furnished'],
+  locationHighlights:['2-min walk to Bali Social Club','5-min walk to Batu Bolong strip','10-min ride to Batu Bolong Beach','5-min drive to Pererenan'],
+  inclusions:['400mbps fibre internet','Drinking water & cooking gas','Electricity','Banjar fee & trash collection','Housekeeping 2× weekly','Linen & towels changed weekly'],
+};
+const LANE={
+  tag:'Pererenan',
+  mapEmbed:'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3946.4!2d115.1348!3d-8.6283!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwMzcnNDIuMCJTIDExNcKwMDgnMDMuMyJF!5e0!3m2!1sen!2sid!4v1',
+  mapLink:'https://maps.app.goo.gl/JGcqfdZMqUXSVjpD9',
+  overview:'Boutique collection of 3 fully furnished one-bedroom townhouses in central Pererenan. Walkable yet private, ideal for long-term living.',
+  features:['250m² land','1 Bedroom · 1 Bathroom','Large shared swimming pool','XL king beds · Dedicated workspaces','Terrazzo floors & bathrooms','Fully equipped kitchen · Air-conditioning','200mbps fiber (dedicated per unit) · Fully furnished'],
+  locationHighlights:['1-min to Pepito & Frestive','3-min to Obsidian Gym','4-min to Bar Vera','8-min to Pererenan Beach','10-min to La Brisa'],
+  inclusions:['400mbps fibre internet','Drinking water & cooking gas','Banjar fee & trash collection','Housekeeping 2× weekly','Linen & towels changed weekly','Electricity excluded for yearly'],
+};
+const SATURNO={
+  tag:'Padang Linjong · Canggu',
+  mapEmbed:'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3946.4!2d115.1353!3d-8.6469!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwMzgnNDkuNiJTIDExNcKwMDgnMDcuMyJF!5e0!3m2!1sen!2sid!4v1',
+  mapLink:'https://maps.app.goo.gl/r4833cRt8oEXMjpD9',
+  overview:'Spacious 3-bedroom villa in prime Padang Linjong next to Bali Buddha. Central, walkable, and ideal for long-term living.',
+  features:['350m² land · 250m² building','3 Bedrooms · 3 Bathrooms','Private swimming pool · Tropical garden','Enclosed AC living · Open-concept kitchen','Washing machine · Surfboards · Tennis rackets','Fully furnished'],
+  locationHighlights:['Next to Bali Buddha','Walking distance to cafés & shops','Central Canggu location'],
+  inclusions:['400mbps fibre internet','Drinking water & cooking gas','Banjar fee & trash collection','Housekeeping 2× weekly','Linen & towels changed weekly'],
+};
+const TROPICANA={
+  tag:'Buduk · Near Canggu',
+  mapEmbed:'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3946.4!2d115.1549!3d-8.6153!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwMzYnNTUuMSJTIDExNcKwMDknMTcuNiJF!5e0!3m2!1sen!2sid!4v1',
+  mapLink:'https://maps.app.goo.gl/T78azqdxnspQAnVs5',
+  overview:'Modern private residences in Buduk offering private outdoor space, quiet surroundings, and proximity to Pererenan and Canggu.',
+  features:['60m² land · 75m² building','1 Bedroom · 1 Bathroom','Private swimming pool & poolside seating','Balcony with bistro table · Dedicated workspace','Extra-large two-person wardrobe','Fully equipped kitchen · Air-conditioning','High-speed fiber internet · Fully furnished'],
+  locationHighlights:['5-min to Pererenan','10-min to Canggu','Quiet residential area'],
+  inclusions:['400mbps fibre internet','Drinking water & cooking gas','Banjar fee & trash collection','Housekeeping 2× weekly','Linen & towels changed weekly','Electricity excluded for yearly'],
+};
+
+const LISTINGS={
+  'haus-1':{...HAUS,title:'HAUS Canggu – Unit 1',monthly:'27jt',yearly:'270jt',folder:'1xkEkRprYDCIfSCwCmfuPgcszI5kakOKF'},
+  'haus-2':{...HAUS,title:'HAUS Canggu – Unit 2',monthly:'27jt',yearly:'270jt',folder:'11Pr1akQilpBkgT37BhbajsneP7Ekijmu'},
+  'haus-4':{...HAUS,title:'HAUS Canggu – Unit 4',monthly:'30jt',yearly:'300jt',folder:'1qpdTd5oDxIbGkISxgSTKNJ3BtYM_aDEw'},
+  'haus-5':{...HAUS,title:'HAUS Canggu – Unit 5',monthly:'30jt',yearly:'300jt',folder:'1mxfot6q9JVF2C22wPpVzyNP8zVotJURr'},
+  'lanehaus-1':{...LANE,title:'LaneHAUS – Unit 1',monthly:'24jt',yearly:'240jt',folder:'1f6mhoH36L-uY5ncGq5LHhq2_dMS_20cd'},
+  'lanehaus-3':{...LANE,title:'LaneHAUS – Unit 3',monthly:'22jt',yearly:'220jt',folder:'1OY71DdG07xakOCCMZJAz4CqiI4EQm24F'},
+  'villa-saturno':{...SATURNO,title:'Villa Saturno',monthly:'40jt',yearly:'350jt',yearly2:'600jt',folder:'19Fh1nnnN6pvR3Ia4Pd2opB-J1D0hj1fZ'},
+  'tropicana-a4':{...TROPICANA,title:'Tropicana Valley – Unit A4',monthly:'30jt',yearly:'300jt',folder:'1voeHZet0DspSnBeLeAIWarz-FPqUCUAr'},
+  'tropicana-a5':{...TROPICANA,title:'Tropicana Valley – Unit A5',monthly:'30jt',yearly:'300jt',folder:'1voeHZet0DspSnBeLeAIWarz-FPqUCUAr'},
+  'tropicana-b2':{...TROPICANA,title:'Tropicana Valley – Unit B2',monthly:'30jt',yearly:'300jt',folder:'1voeHZet0DspSnBeLeAIWarz-FPqUCUAr'},
+  'tropicana-b3':{...TROPICANA,title:'Tropicana Valley – Unit B3',monthly:'30jt',yearly:'300jt',folder:'1voeHZet0DspSnBeLeAIWarz-FPqUCUAr'},
+  'tropicana-b4':{...TROPICANA,title:'Tropicana Valley – Unit B4',monthly:'30jt',yearly:'300jt',folder:'1voeHZet0DspSnBeLeAIWarz-FPqUCUAr'},
+  'tropicana-b5':{...TROPICANA,title:'Tropicana Valley – Unit B5',monthly:'30jt',yearly:'300jt',folder:'1voeHZet0DspSnBeLeAIWarz-FPqUCUAr'},
+  'tropicana-b6':{...TROPICANA,title:'Tropicana Valley – Unit B6',monthly:'30jt',yearly:'300jt',folder:'1voeHZet0DspSnBeLeAIWarz-FPqUCUAr'},
+};
+
+// ── CAROUSEL ──
+let carPhotos=[], carIdx=0;
+
+function initCarousel(photos) {
+  carPhotos=photos; carIdx=0;
+  const track=document.getElementById('carousel-track');
+  const dots=document.getElementById('car-dots');
+  const count=document.getElementById('car-count');
+  document.getElementById('carousel-loading').style.display='none';
+  track.style.display='flex';
+  track.innerHTML=photos.map((url,i)=>
+    '<div class="carousel-slide"><img src="'+url+'" loading="'+(i===0?'eager':'lazy')+'" onclick="openLb('+i+')" alt="Photo '+(i+1)+'" style="cursor:zoom-in"></div>'
+  ).join('');
+  if(photos.length>1){
+    document.getElementById('car-prev').style.display='flex';
+    document.getElementById('car-next').style.display='flex';
+    count.style.display='block';
+    count.textContent='1 / '+photos.length;
+    dots.innerHTML=photos.slice(0,Math.min(photos.length,12)).map((_,i)=>
+      '<div class="car-dot'+(i===0?' active':'')+'" onclick="carGo('+i+')"></div>'
+    ).join('');
+  }
+}
+
+function carNav(dir){carGo((carIdx+dir+carPhotos.length)%carPhotos.length);}
+function carGo(idx){
+  carIdx=idx;
+  document.getElementById('carousel-track').style.transform='translateX(-'+(idx*100)+'%)';
+  document.getElementById('car-count').textContent=(idx+1)+' / '+carPhotos.length;
+  document.querySelectorAll('.car-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+}
+
+// ── LIGHTBOX ──
+let lbIdx=0;
+function openLb(idx){lbIdx=idx;showLb();document.getElementById('lb').classList.add('open');document.body.style.overflow='hidden';}
+function showLb(){document.getElementById('lb-img').src=carPhotos[lbIdx];document.getElementById('lb-counter').textContent=(lbIdx+1)+' / '+carPhotos.length;}
+function lbNav(dir){lbIdx=(lbIdx+dir+carPhotos.length)%carPhotos.length;showLb();}
+function closeLb(){document.getElementById('lb').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('lb').classList.contains('open'))return;
+  if(e.key==='ArrowRight')lbNav(1);if(e.key==='ArrowLeft')lbNav(-1);if(e.key==='Escape')closeLb();
+});
+
+// ── BOOT ──
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function getSlug(){
+  const path=window.location.pathname.replace(/^\/+/,'').replace(/\/+$/,'');
+  return path||'';
+}
+
+async function boot(){
+  const slug=getSlug();
+  const listing=LISTINGS[slug];
+
+  if(!listing){
+    document.getElementById('loading').style.display='none';
+    document.getElementById('error').style.display='flex';
+    document.getElementById('error-msg').textContent=slug?'Listing "'+slug+'" not found.':'Please use a valid listing link.';
+    return;
+  }
+
+  document.title=listing.title+' · Samba Rentals';
+  document.getElementById('prop-tag').textContent=listing.tag;
+  document.getElementById('prop-title').textContent=listing.title;
+  document.getElementById('prop-overview').textContent=listing.overview;
+
+  // Details grid
+  const grid=document.getElementById('details-grid');
+  grid.innerHTML=
+    '<div><div class="detail-section-title">Property Features</div>'+listing.features.map(f=>'<div class="detail-row">'+esc(f)+'</div>').join('')+'</div>'+
+    '<div><div class="detail-section-title">Location Highlights</div>'+listing.locationHighlights.map(f=>'<div class="detail-row">'+esc(f)+'</div>').join('')+'</div>';
+
+  // Pricing
+  let prHtml='<div class="price-item"><span class="price-amt">'+listing.monthly+'</span><span class="price-per">/ month</span></div>'+
+             '<div class="price-item"><span class="price-amt">'+listing.yearly+'</span><span class="price-per">/ year</span></div>';
+  if(listing.yearly2) prHtml+='<div class="price-item"><span class="price-amt">'+listing.yearly2+'</span><span class="price-per">/ 2 years</span></div>';
+  document.getElementById('price-rows').innerHTML=prHtml;
+  document.getElementById('inclusions').innerHTML=listing.inclusions.map(i=>'<div class="incl-row">'+esc(i)+'</div>').join('');
+
+  // Map
+  document.getElementById('map-iframe').src=listing.mapEmbed;
+  document.getElementById('map-btn').href=listing.mapLink;
+
+  // Show listing
+  document.getElementById('loading').style.display='none';
+  document.getElementById('listing').style.display='block';
+
+  // Load photos from proxy on agent portal
+  loadPhotos(listing.folder);
+}
+
+async function loadPhotos(folderId){
+  try{
+    const r=await fetch('https://sambarentals.vercel.app/api/gdrive?folder='+folderId);
+    const d=await r.json();
+    if(d.photos&&d.photos.length){
+      initCarousel(d.photos.map(p=>p.url));
+    } else {
+      document.getElementById('carousel-loading').textContent='No photos available yet.';
+    }
+  } catch(e){
+    document.getElementById('carousel-loading').textContent='Could not load photos.';
+  }
+}
+
+boot();
+</script>
+</body>
+</html>
