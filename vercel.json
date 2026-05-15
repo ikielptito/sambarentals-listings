@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/listing.js": {
+      "includeFiles": "index.html"
+    }
+  },
   "rewrites": [
     { "source": "/(.*)", "destination": "/api/listing?slug=$1" }
   ]
