@@ -1,6 +1,5 @@
-import { readFileSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+const { readFileSync } = require('fs');
+const { join } = require('path');
 
 const LISTINGS = {
   'haus-1':        { title: 'HAUS Canggu – Unit 1',       folder: '1xkEkRprYDCIfSCwCmfuPgcszI5kakOKF', overview: 'Boutique one-bedroom apartment in the heart of Batu Bolong, Canggu. Steps from cafés and nightlife, yet tucked in a quiet residential lane.' },
@@ -19,12 +18,20 @@ const LISTINGS = {
   'tropicana-b6':  { title: 'Tropicana Valley – Unit B6', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Modern private residence in Buduk with private pool, quiet surroundings, and easy access to Pererenan and Canggu.' },
 };
 
-const htmlPath = join(dirname(fileURLToPath(import.meta.url)), '..', 'index.html');
-
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   const slug = (req.query.slug || '').replace(/^\/+/, '');
   const listing = LISTINGS[slug];
-  const html = readFileSync(htmlPath, 'utf8');
+
+  let html;
+  try {
+    html = readFileSync(join(__dirname, 'index.html'), 'utf8');
+  } catch (e) {
+    try {
+      html = readFileSync(join(__dirname, '..', 'index.html'), 'utf8');
+    } catch (e2) {
+      return res.status(500).json({ error: 'Cannot read index.html', paths: [join(__dirname, 'index.html'), join(__dirname, '..', 'index.html')] });
+    }
+  }
 
   if (!listing) {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -65,4 +72,4 @@ export default async function handler(req, res) {
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
   return res.status(200).send(injected);
-}
+};
