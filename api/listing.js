@@ -2,20 +2,20 @@ const { readFileSync } = require('fs');
 const { join } = require('path');
 
 const LISTINGS = {
-  'haus-1':        { title: 'HAUS Canggu – Unit 1',       folder: '1xkEkRprYDCIfSCwCmfuPgcszI5kakOKF', overview: 'Boutique one-bedroom apartment in the heart of Batu Bolong, Canggu. Steps from cafés and nightlife, yet tucked in a quiet residential lane.' },
-  'haus-2':        { title: 'HAUS Canggu – Unit 2',       folder: '11Pr1akQilpBkgT37BhbajsneP7Ekijmu', overview: 'Boutique one-bedroom apartment in the heart of Batu Bolong, Canggu. Steps from cafés and nightlife, yet tucked in a quiet residential lane.' },
-  'haus-4':        { title: 'HAUS Canggu – Unit 4',       folder: '1qpdTd5oDxIbGkISxgSTKNJ3BtYM_aDEw', overview: 'Boutique one-bedroom apartment in the heart of Batu Bolong, Canggu. Steps from cafés and nightlife, yet tucked in a quiet residential lane.' },
-  'haus-5':        { title: 'HAUS Canggu – Unit 5',       folder: '1mxfot6q9JVF2C22wPpVzyNP8zVotJURr', overview: 'Boutique one-bedroom apartment in the heart of Batu Bolong, Canggu. Steps from cafés and nightlife, yet tucked in a quiet residential lane.' },
-  'lanehaus-1':    { title: 'LaneHAUS – Unit 1',          folder: '1f6mhoH36L-uY5ncGq5LHhq2_dMS_20cd', overview: 'Boutique one-bedroom townhouse in central Pererenan. Walkable yet private, ideal for long-term living in Canggu.' },
-  'lanehaus-3':    { title: 'LaneHAUS – Unit 3',          folder: '1OY71DdG07xakOCCMZJAz4CqiI4EQm24F', overview: 'Boutique one-bedroom townhouse in central Pererenan. Walkable yet private, ideal for long-term living in Canggu.' },
-  'villa-saturno': { title: 'Villa Saturno',              folder: '19Fh1nnnN6pvR3Ia4Pd2opB-J1D0hj1fZ', overview: 'Spacious 3-bedroom villa in prime Padang Linjong next to Bali Buddha. Central, walkable, and ideal for long-term living.' },
-  'tropicana-a4':  { title: 'Tropicana Valley – Unit A4', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Modern private residence in Buduk with private pool, quiet surroundings, and easy access to Pererenan and Canggu.' },
-  'tropicana-a5':  { title: 'Tropicana Valley – Unit A5', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Modern private residence in Buduk with private pool, quiet surroundings, and easy access to Pererenan and Canggu.' },
-  'tropicana-b2':  { title: 'Tropicana Valley – Unit B2', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Modern private residence in Buduk with private pool, quiet surroundings, and easy access to Pererenan and Canggu.' },
-  'tropicana-b3':  { title: 'Tropicana Valley – Unit B3', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Modern private residence in Buduk with private pool, quiet surroundings, and easy access to Pererenan and Canggu.' },
-  'tropicana-b4':  { title: 'Tropicana Valley – Unit B4', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Modern private residence in Buduk with private pool, quiet surroundings, and easy access to Pererenan and Canggu.' },
-  'tropicana-b5':  { title: 'Tropicana Valley – Unit B5', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Modern private residence in Buduk with private pool, quiet surroundings, and easy access to Pererenan and Canggu.' },
-  'tropicana-b6':  { title: 'Tropicana Valley – Unit B6', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Modern private residence in Buduk with private pool, quiet surroundings, and easy access to Pererenan and Canggu.' },
+  'haus-1':        { title: 'HAUS Canggu – Unit 1',       folder: '1xkEkRprYDCIfSCwCmfuPgcszI5kakOKF', overview: 'Batu Bolong, Canggu · 27jt/mo · 1BR, shared pool, next to Bali Social Club' },
+  'haus-2':        { title: 'HAUS Canggu – Unit 2',       folder: '11Pr1akQilpBkgT37BhbajsneP7Ekijmu', overview: 'Batu Bolong, Canggu · 27jt/mo · 1BR, shared pool, next to Bali Social Club' },
+  'haus-4':        { title: 'HAUS Canggu – Unit 4',       folder: '1qpdTd5oDxIbGkISxgSTKNJ3BtYM_aDEw', overview: 'Batu Bolong, Canggu · 30jt/mo · 1BR, shared pool, next to Bali Social Club' },
+  'haus-5':        { title: 'HAUS Canggu – Unit 5',       folder: '1mxfot6q9JVF2C22wPpVzyNP8zVotJURr', overview: 'Batu Bolong, Canggu · 30jt/mo · 1BR, shared pool, next to Bali Social Club' },
+  'lanehaus-1':    { title: 'LaneHAUS – Unit 1',          folder: '1f6mhoH36L-uY5ncGq5LHhq2_dMS_20cd', overview: 'Pererenan · 24jt/mo · 1BR townhouse, shared pool, dedicated workspace' },
+  'lanehaus-3':    { title: 'LaneHAUS – Unit 3',          folder: '1OY71DdG07xakOCCMZJAz4CqiI4EQm24F', overview: 'Pererenan · 22jt/mo · 1BR townhouse, shared pool, dedicated workspace' },
+  'villa-saturno': { title: 'Villa Saturno',              folder: '19Fh1nnnN6pvR3Ia4Pd2opB-J1D0hj1fZ', overview: 'Padang Linjong, Canggu · 40jt/mo · 3BR, private pool, 5 min. to Pererenan Beach' },
+  'tropicana-a4':  { title: 'Tropicana Valley – Unit A4', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
+  'tropicana-a5':  { title: 'Tropicana Valley – Unit A5', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
+  'tropicana-b2':  { title: 'Tropicana Valley – Unit B2', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
+  'tropicana-b3':  { title: 'Tropicana Valley – Unit B3', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
+  'tropicana-b4':  { title: 'Tropicana Valley – Unit B4', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
+  'tropicana-b5':  { title: 'Tropicana Valley – Unit B5', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
+  'tropicana-b6':  { title: 'Tropicana Valley – Unit B6', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
 };
 
 module.exports = async function handler(req, res) {
