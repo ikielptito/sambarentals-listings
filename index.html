@@ -256,7 +256,8 @@ function carGo(idx){
     e.preventDefault();
     const track=document.getElementById('carousel-track');
     track.style.transition='none';
-    track.style.transform='translateX(calc(-'+(carIdx*100)+'% + '+dx+'px))';
+    const cdx=Math.max(-wrap.offsetWidth,Math.min(wrap.offsetWidth,dx));
+    track.style.transform='translateX(calc(-'+(carIdx*100)+'% + '+cdx+'px))';
   },{passive:false});
   function onEnd(endX){
     if(!carPhotos.length)return;
