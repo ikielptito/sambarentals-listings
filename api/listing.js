@@ -8,14 +8,14 @@ const LISTINGS = {
   'haus-5':        { title: 'HAUS Canggu – Unit 5',       folder: '1mxfot6q9JVF2C22wPpVzyNP8zVotJURr', overview: 'Batu Bolong, Canggu · 30jt/mo · 1BR, shared pool, next to Bali Social Club' },
   'lanehaus-1':    { title: 'LaneHAUS – Unit 1',          folder: '1f6mhoH36L-uY5ncGq5LHhq2_dMS_20cd', overview: 'Pererenan · 24jt/mo · 1BR townhouse, shared pool, dedicated workspace' },
   'lanehaus-3':    { title: 'LaneHAUS – Unit 3',          folder: '1OY71DdG07xakOCCMZJAz4CqiI4EQm24F', overview: 'Pererenan · 22jt/mo · 1BR townhouse, shared pool, dedicated workspace' },
-  'villa-saturno': { title: 'Villa Saturno',              folder: '19Fh1nnnN6pvR3Ia4Pd2opB-J1D0hj1fZ', overview: 'Padang Linjong, Canggu · 40jt/mo · 3BR, private pool, 5 min. to Pererenan Beach' },
-  'tropicana-a4':  { title: 'Tropicana Valley – Unit A4', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
-  'tropicana-a5':  { title: 'Tropicana Valley – Unit A5', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
-  'tropicana-b2':  { title: 'Tropicana Valley – Unit B2', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
-  'tropicana-b3':  { title: 'Tropicana Valley – Unit B3', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
-  'tropicana-b4':  { title: 'Tropicana Valley – Unit B4', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
-  'tropicana-b5':  { title: 'Tropicana Valley – Unit B5', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
-  'tropicana-b6':  { title: 'Tropicana Valley – Unit B6', folder: '1voeHZet0DspSnBeLeAIWarz-FPqUCUAr', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
+  'villa-saturno': { title: 'Villa Saturno',              folder: '10MCsy3Z83H2zYGjH1JxtTn3dqpkceBd_', overview: 'Padang Linjong, Canggu · 40jt/mo · 3BR, private pool, 5 min. to Pererenan Beach' },
+  'tropicana-a4':  { title: 'Tropicana Valley – Unit A4', folder: '1mnGM9JCadYBWjQcQ7kRePdVSQFrUV0sZ', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
+  'tropicana-a5':  { title: 'Tropicana Valley – Unit A5', folder: '1QRR7Ie78AVWi_YRiWcnOE_d6MEf6wvr5', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
+  'tropicana-b2':  { title: 'Tropicana Valley – Unit B2', folder: '11ZLrn0_3Y6W52-eskzmmnhQBZLfchOUV', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
+  'tropicana-b3':  { title: 'Tropicana Valley – Unit B3', folder: '11ZLrn0_3Y6W52-eskzmmnhQBZLfchOUV', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
+  'tropicana-b4':  { title: 'Tropicana Valley – Unit B4', folder: '1oXUcbQN4rjlQyA3HTpjUlVjw37S6sKDw', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
+  'tropicana-b5':  { title: 'Tropicana Valley – Unit B5', folder: '11ZLrn0_3Y6W52-eskzmmnhQBZLfchOUV', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
+  'tropicana-b6':  { title: 'Tropicana Valley – Unit B6', folder: '11ZLrn0_3Y6W52-eskzmmnhQBZLfchOUV', overview: 'Buduk · 30jt/mo · 1BR, private pool, 5 min. to Pererenan' },
 };
 
 module.exports = async function handler(req, res) {
