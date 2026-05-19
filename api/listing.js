@@ -64,10 +64,17 @@ module.exports = async function handler(req, res) {
     ogImage ? `<meta name="twitter:image" content="${ogImage}">` : '',
   ].filter(Boolean).join('\n');
 
-  const injected = html.replace(
+  let injected = html.replace(
     '<title>Samba Rentals</title>',
     `<title>${pageTitle}</title>\n${ogTags}`
   );
+
+  if (ogImage) {
+    injected = injected.replace(
+      'id="carousel-wrap" class="carousel-wrap"',
+      `id="carousel-wrap" class="carousel-wrap" data-first-photo="${ogImage}"`
+    );
+  }
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');

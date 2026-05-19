@@ -301,16 +301,18 @@ async function boot(){
 }
 
 async function loadPhotos(folderId){
+  const firstPhoto=document.getElementById('carousel-wrap').dataset.firstPhoto;
+  if(firstPhoto) initCarousel([firstPhoto]);
   try{
     const r=await fetch('https://sambarentals.vercel.app/api/gdrive?folder='+folderId);
     const d=await r.json();
     if(d.photos&&d.photos.length){
       initCarousel(d.photos.map(p=>p.url));
-    } else {
+    } else if(!firstPhoto){
       document.getElementById('carousel-loading').textContent='No photos available yet.';
     }
   } catch(e){
-    document.getElementById('carousel-loading').textContent='Could not load photos.';
+    if(!firstPhoto) document.getElementById('carousel-loading').textContent='Could not load photos.';
   }
 }
 
