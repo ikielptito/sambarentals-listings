@@ -13,8 +13,10 @@
 body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;}
 
 /* NAV */
-nav{background:var(--dark);padding:0 28px;height:52px;display:flex;align-items:center;justify-content:center;}
-.nav-brand{font-family:'Playfair Display',serif;font-size:1.1rem;color:#fff;letter-spacing:0.02em;}
+nav{background:var(--dark);padding:10px 28px;display:flex;align-items:center;justify-content:center;}
+.nav-brand{display:flex;align-items:center;}
+.nav-logo{height:72px;}
+@media(max-width:600px){nav{padding:8px 16px;}.nav-logo{height:44px;}}
 
 /* STATE SCREENS */
 .state{min-height:80vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:var(--muted);font-size:0.9rem;}
@@ -100,10 +102,7 @@ footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-si
 </head>
 <body>
 
-<nav><span class="nav-brand" style="display:flex;flex-direction:column;align-items:flex-start">
-  <img src="/logo-samba.png" alt="Samba" style="height:72px">
-  <span style="font-family:'Sora',sans-serif;font-size:.65rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:3px">Connecting Owners &amp; Agents</span>
-</span></nav>
+<nav><span class="nav-brand"><img src="/logo-samba.png" alt="Samba" class="nav-logo"></span></nav>
 
 <div class="state" id="loading"><div class="spinner"></div><span>Loading listing…</span></div>
 <div class="state" id="error" style="display:none"><div style="font-size:2rem">⚠️</div><span id="error-msg">Listing not found.</span></div>
